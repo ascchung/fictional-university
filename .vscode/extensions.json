@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "bmewburn.vscode-intelephense-client",
+    "wordpresstoolbox.wordpress-toolbox",
+    "claudiosanches.wordpress-hooks-intellisense",
+    "johnbillion.vscode-wordpress-hooks"
+  ]
+}
