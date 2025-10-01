@@ -47,6 +47,11 @@ composer.phar
 /wp-content/themes/*/build/
 /wp-content/themes/*/dist/
 /wp-content/themes/*/assets/built/
+wp-content/themes/fictional-university-theme/build/
+
+# WordPress Scripts build output
+*.asset.php
+*.deps.json
 
 # Logs
 *.log
