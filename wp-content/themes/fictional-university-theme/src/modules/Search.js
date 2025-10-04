@@ -51,7 +51,7 @@ class Search {
     if (
       e.keyCode == 83 &&
       !this.isOverlayOpen &&
-      $('input, textarea').is(':focus')
+      !$('input, textarea').is(':focus')
     ) {
       this.openOverlay();
     }
