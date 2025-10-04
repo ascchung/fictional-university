@@ -3960,12 +3960,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 class GMap {
   constructor() {
-    document.querySelectorAll(".acf-map").forEach(el => {
+    document.querySelectorAll('.acf-map').forEach(el => {
       this.new_map(el);
     });
   }
   new_map($el) {
-    var $markers = $el.querySelectorAll(".marker");
+    var $markers = $el.querySelectorAll('.marker');
     var args = {
       zoom: 16,
       center: new google.maps.LatLng(0, 0),
@@ -3985,7 +3985,7 @@ class GMap {
   } // end new_map
 
   add_marker($marker, map) {
-    var latlng = new google.maps.LatLng($marker.getAttribute("data-lat"), $marker.getAttribute("data-lng"));
+    var latlng = new google.maps.LatLng($marker.getAttribute('data-lat'), $marker.getAttribute('data-lng'));
     var marker = new google.maps.Marker({
       position: latlng,
       map: map
@@ -4000,7 +4000,7 @@ class GMap {
       });
 
       // show info window when marker is clicked
-      google.maps.event.addListener(marker, "click", function () {
+      google.maps.event.addListener(marker, 'click', function () {
         infowindow.open(map, marker);
       });
     }
@@ -4044,22 +4044,22 @@ __webpack_require__.r(__webpack_exports__);
 
 class HeroSlider {
   constructor() {
-    if (document.querySelector(".hero-slider")) {
+    if (document.querySelector('.hero-slider')) {
       // count how many slides there are
-      const dotCount = document.querySelectorAll(".hero-slider__slide").length;
+      const dotCount = document.querySelectorAll('.hero-slider__slide').length;
 
       // Generate the HTML for the navigation dots
-      let dotHTML = "";
+      let dotHTML = '';
       for (let i = 0; i < dotCount; i++) {
         dotHTML += `<button class="slider__bullet glide__bullet" data-glide-dir="=${i}"></button>`;
       }
 
       // Add the dots HTML to the DOM
-      document.querySelector(".glide__bullets").insertAdjacentHTML("beforeend", dotHTML);
+      document.querySelector('.glide__bullets').insertAdjacentHTML('beforeend', dotHTML);
 
       // Actually initialize the glide / slider script
-      var glide = new _glidejs_glide__WEBPACK_IMPORTED_MODULE_0__["default"](".hero-slider", {
-        type: "carousel",
+      var glide = new _glidejs_glide__WEBPACK_IMPORTED_MODULE_0__["default"]('.hero-slider', {
+        type: 'carousel',
         perView: 1,
         autoplay: 3000
       });
@@ -4083,17 +4083,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 class MobileMenu {
   constructor() {
-    this.menu = document.querySelector(".site-header__menu");
-    this.openButton = document.querySelector(".site-header__menu-trigger");
+    this.menu = document.querySelector('.site-header__menu');
+    this.openButton = document.querySelector('.site-header__menu-trigger');
     this.events();
   }
   events() {
-    this.openButton.addEventListener("click", () => this.openMenu());
+    this.openButton.addEventListener('click', () => this.openMenu());
   }
   openMenu() {
-    this.openButton.classList.toggle("fa-bars");
-    this.openButton.classList.toggle("fa-window-close");
-    this.menu.classList.toggle("site-header__menu--active");
+    this.openButton.classList.toggle('fa-bars');
+    this.openButton.classList.toggle('fa-window-close');
+    this.menu.classList.toggle('site-header__menu--active');
   }
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MobileMenu);
@@ -4116,24 +4116,40 @@ __webpack_require__.r(__webpack_exports__);
 class Search {
   // 1. describe and create/initiate object
   constructor() {
-    this.openButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".js-search-trigger");
-    this.closeButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".search-overlay__close");
-    this.searchOverlay = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".search-overlay");
+    this.openButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()('.js-search-trigger');
+    this.closeButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()('.search-overlay__close');
+    this.searchOverlay = jquery__WEBPACK_IMPORTED_MODULE_0___default()('.search-overlay');
     this.events();
+    this.isOverlayOpen = false;
   }
 
   // 2. Events (dispatcher)
   events() {
-    this.openButton.on("click", this.openOverlay.bind(this));
-    this.closeButton.on("click", this.closeOverlay.bind(this));
+    this.openButton.on('click', this.openOverlay.bind(this));
+    this.closeButton.on('click', this.closeOverlay.bind(this));
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('keydown', this.keyPressDispatcher.bind(this));
   }
 
   // 3. Methods (function, action)
+  keyPressDispatcher(e) {
+    if (e.keyCode == 83 && !this.isOverlayOpen) {
+      this.openOverlay();
+    }
+    if (e.keyCode == 27 && this.isOverlayOpen) {
+      this.closeOverlay();
+    }
+  }
   openOverlay() {
-    this.searchOverlay.addClass("search-overlay--active");
+    this.searchOverlay.addClass('search-overlay--active');
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()('body').addClass('body-no-scroll');
+    console.log('our open method just ran');
+    this.isOverlayOpen = true;
   }
   closeOverlay() {
-    this.searchOverlay.removeClass("search-overlay--active");
+    this.searchOverlay.removeClass('search-overlay--active');
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()('body').removeClass('body-no-scroll');
+    console.log('our close method just ran');
+    this.isOverlayOpen = false;
   }
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Search);
