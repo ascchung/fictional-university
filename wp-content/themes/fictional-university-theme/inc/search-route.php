@@ -32,6 +32,8 @@ function universitySearchResults($data)
             array_push($results['generalInfo'], [
                 'title' => get_the_title(),
                 'url' => get_the_permalink(),
+                'postType' => get_post_type(),
+                'authorName' => get_the_author(),
                 'id' => get_the_ID()
             ]);
         }
@@ -52,8 +54,8 @@ function universitySearchResults($data)
             ]);
         }
 
-        if (get_post_type() == 'campus') {
-            array_push($results['campuses'], [
+        if (get_post_type() == 'event') {
+            array_push($results['events'], [
                 'title' => get_the_title(),
                 'url' => get_the_permalink(),
                 'id' => get_the_ID()
