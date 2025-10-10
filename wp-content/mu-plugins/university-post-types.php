@@ -1,96 +1,97 @@
 <?php
+
 function university_post_types()
 {
     // Campus Post Type
-    register_post_type('campus', array(
+    register_post_type('campus', [
         'has_archive' => true,
         'show_in_rest' => true,
-        'supports' => array(
+        'supports' => [
             'title',
             'editor',
             'excerpt',
-        ),
-        'rewrite' => array(
+        ],
+        'rewrite' => [
             'slug' => 'campuses'
-        ),
+        ],
         'public' => true,
         'menu_icon' => 'dashicons-location-alt',
-        'labels' => array(
+        'labels' => [
             'name' => 'Campuses',
             'add_new' => 'Add New Campus',
             'add_new_item' => 'Add New Campus',
             'edit_item' => 'Edit Campus',
             'all_items' => 'All Campuses',
             'singular_name' => 'Campus',
-        )
-    ));
+        ]
+    ]);
 
     // Event Post Type
-    register_post_type('event', array(
+    register_post_type('event', [
         'has_archive' => true,
         'show_in_rest' => true,
-        'supports' => array(
+        'supports' => [
             'title',
             'editor',
             'excerpt',
-        ),
-        'rewrite' => array(
+        ],
+        'rewrite' => [
             'slug' => 'events'
-        ),
+        ],
         'public' => true,
         'menu_icon' => 'dashicons-calendar',
-        'labels' => array(
+        'labels' => [
             'name' => 'Events',
             'add_new' => 'Add New Event',
             'add_new_item' => 'Add New Event',
             'edit_item' => 'Edit Event',
             'all_items' => 'All Events',
             'singular_name' => 'Event',
-        )
-    ));
+        ]
+    ]);
 
     // ProgramPost Type
-    register_post_type('program', array(
+    register_post_type('program', [
         'has_archive' => true,
         'show_in_rest' => true,
-        'supports' => array(
+        'supports' => [
             'title',
-            'editor',
-        ),
-        'rewrite' => array(
+            'editor'
+        ],
+        'rewrite' => [
             'slug' => 'programs'
-        ),
+        ],
         'public' => true,
         'menu_icon' => 'dashicons-awards',
-        'labels' => array(
+        'labels' => [
             'name' => 'Programs',
             'add_new' => 'Add New Program',
             'add_new_item' => 'Add New Program',
             'edit_item' => 'Edit Program',
             'all_items' => 'All Programs',
             'singular_name' => 'Program',
-        )
-    ));
+        ]
+    ]);
 
     // Professor Post Type
-    register_post_type('professor', array(
+    register_post_type('professor', [
         'show_in_rest' => true,
-        'supports' => array(
+        'supports' => [
             'title',
             'editor',
             'thumbnail'
-        ),
+        ],
         'public' => true,
         'menu_icon' => 'dashicons-welcome-learn-more',
-        'labels' => array(
+        'labels' => [
             'name' => 'Professors',
             'add_new' => 'Add New Professor',
             'add_new_item' => 'Add New Professor',
             'edit_item' => 'Edit Professor',
             'all_items' => 'All Professors',
             'singular_name' => 'Professor',
-        )
-    ));
+        ]
+    ]);
 }
 
 add_action('init', 'university_post_types');
