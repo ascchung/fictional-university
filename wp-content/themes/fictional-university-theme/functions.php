@@ -1,5 +1,22 @@
 <?php
 
+function university_custom_rest()
+{
+    register_rest_field('post', 'authorName', array(
+        'get_callback' => function () {
+            return get_the_author();
+        }
+    ));
+
+    //     register_rest_field('post', 'perfectlyCroppedImageURL', array(
+    //         'get_callback' => function () {
+    //             return get_the_date();
+    //         }
+    //     ));
+}
+
+add_action('rest_api_init', 'university_custom_rest');
+
 function universityMapKey($api)
 {
     $api['key'] = defined('GOOGLE_MAPS_API_KEY') ? GOOGLE_MAPS_API_KEY : '';
