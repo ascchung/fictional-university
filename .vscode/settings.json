@@ -3,7 +3,7 @@
   "editor.semanticHighlighting.enabled": true,
   "[php]": {
     "editor.formatOnSave": true,
-    "editor.defaultFormatter": "bmewburn.vscode-intelephense-client",
+    "editor.defaultFormatter": "junstyle.php-cs-fixer",
     "editor.semanticHighlighting.enabled": true
   },
   "[javascript]": {
@@ -36,5 +36,5 @@
   "intelephense.diagnostics.undefinedProperties": true,
   "intelephense.completion.maxItems": 100,
   "intelephense.completion.triggerParameterHints": true,
-  "intelephense.references.exclude": ["**/vendor/**", "**/node_modules/**"]
+  "intelephense.references.exclude": ["**/vendor/**", "**/node_modules/**"],
 }
