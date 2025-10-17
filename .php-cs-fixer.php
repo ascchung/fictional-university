@@ -10,4 +10,5 @@ return (new PhpCsFixer\Config())
         'no_blank_lines_after_phpdoc' => true,
         'single_quote' => true,
         'no_extra_blank_lines' => true,
+        'semicolon_after_instruction' => true,
     ]);

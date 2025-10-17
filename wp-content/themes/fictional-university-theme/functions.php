@@ -47,7 +47,7 @@ function pageBanner($args = null)
     ?>
     <div class="page-banner">
         <div class="page-banner__bg-image" style="background-image: url(
-        <?php echo $args['photo'] ?>);">
+        <?php echo $args['photo']; ?>);">
         </div>
         <div class="page-banner__content container container--narrow">
             <h1 class="page-banner__title"><?php echo $args['title']; ?></h1>
@@ -139,3 +139,29 @@ function noSubsAdminBar()
     }
 }
 add_action('wp_loaded', 'noSubsAdminBar');
+
+// Customize login screen
+
+function ourHeaderUrl()
+{
+    return esc_url(site_url('/'));
+}
+
+add_filter('login_headerurl', 'ourHeaderUrl');
+
+function ourLoginCSS()
+{
+    wp_enqueue_style('custom-google-fonts', '//fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Roboto:100,300,400,400i,700,700i');
+    wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+    wp_enqueue_style('university_main_styles', get_theme_file_uri('/build/style-index.css')); // This will load the style.css file in the theme root directory
+    wp_enqueue_style('university_extra_styles', get_theme_file_uri('/build/index.css'));
+}
+
+add_action('login_enqueue_scripts', 'ourLoginCSS');
+
+function ourLoginTitle()
+{
+    return get_bloginfo('name');
+}
+
+add_filter('login_headertitle', 'ourLoginTitle');

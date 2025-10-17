@@ -4,7 +4,9 @@
   "[php]": {
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "junstyle.php-cs-fixer",
-    "editor.semanticHighlighting.enabled": true
+    "editor.semanticHighlighting.enabled": true,
+    "editor.autoClosingBrackets": "always",
+    "editor.autoClosingTags": true
   },
   "[javascript]": {
     "editor.formatOnSave": true,
