@@ -100,6 +100,27 @@ function university_post_types()
             'singular_name' => 'Professor',
         ]
     ]);
+
+    // Note Post Type
+    register_post_type('note', [
+        'show_in_rest' => true,
+        'map_meta_cap' => true,
+        'supports' => [
+            'title',
+            'editor',
+        ],
+        'public' => false,
+        'show_ui' => true,
+        'menu_icon' => 'dashicons-welcome-write-blog',
+        'labels' => [
+            'name' => 'Notes',
+            'add_new' => 'Add New Note',
+            'add_new_item' => 'Add New Note',
+            'edit_item' => 'Edit Note',
+            'all_items' => 'All Notes',
+            'singular_name' => 'Note',
+        ]
+    ]);
 }
 
 add_action('init', 'university_post_types');
