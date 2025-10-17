@@ -68,7 +68,8 @@ function university_files()
     wp_enqueue_style('university_extra_styles', get_theme_file_uri('/build/index.css'));
 
     wp_localize_script('main-university-js', 'universityData', [
-        'root_url' => get_site_url()
+        'root_url' => get_site_url(),
+        'nonce' => wp_create_nonce('wp_rest')
     ]);
 }
 add_action('wp_enqueue_scripts', 'university_files'); // This is what calls the function to enqueue the styles, we also don't add () on 'university_files' because we don't want to call the function immediately, we want to call it when WordPress is ready to enqueue scripts and styles.
