@@ -4,11 +4,11 @@ require get_theme_file_path('/inc/search-route.php');
 
 function university_custom_rest()
 {
-    register_rest_field('post', 'authorName', array(
+    register_rest_field('post', 'authorName', [
         'get_callback' => function () {
             return get_the_author();
         }
-    ));
+    ]);
 
     //     register_rest_field('post', 'perfectlyCroppedImageURL', array(
     //         'get_callback' => function () {
@@ -27,7 +27,7 @@ function universityMapKey($api)
 
 add_filter('acf/fields/google_map/api', 'universityMapKey');
 
-function pageBanner($args = NULL)
+function pageBanner($args = null)
 {
     if (!isset($args['title'])) {
         $args['title'] = get_the_title();
@@ -44,7 +44,7 @@ function pageBanner($args = NULL)
             $args['photo'] = get_theme_file_uri('/images/ocean.jpg');
         }
     }
-?>
+    ?>
     <div class="page-banner">
         <div class="page-banner__bg-image" style="background-image: url(
         <?php echo $args['photo'] ?>);">
@@ -60,19 +60,18 @@ function pageBanner($args = NULL)
 
 function university_files()
 {
-    wp_enqueue_script('googleMap', '//maps.googleapis.com/maps/api/js?key=' . (defined('GOOGLE_MAPS_API_KEY') ? GOOGLE_MAPS_API_KEY : ''), NULL, '1.0', true);
-    wp_enqueue_script('main-university-js', get_theme_file_uri('/build/index.js'), array('jquery'), '1.0', true);
+    wp_enqueue_script('googleMap', '//maps.googleapis.com/maps/api/js?key=' . (defined('GOOGLE_MAPS_API_KEY') ? GOOGLE_MAPS_API_KEY : ''), null, '1.0', true);
+    wp_enqueue_script('main-university-js', get_theme_file_uri('/build/index.js'), ['jquery'], '1.0', true);
     wp_enqueue_style('custom-google-fonts', '//fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Roboto:100,300,400,400i,700,700i');
     wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
     wp_enqueue_style('university_main_styles', get_theme_file_uri('/build/style-index.css')); // This will load the style.css file in the theme root directory
     wp_enqueue_style('university_extra_styles', get_theme_file_uri('/build/index.css'));
 
-    wp_localize_script('main-university-js', 'universityData', array(
+    wp_localize_script('main-university-js', 'universityData', [
         'root_url' => get_site_url()
-    ));
+    ]);
 }
 add_action('wp_enqueue_scripts', 'university_files'); // This is what calls the function to enqueue the styles, we also don't add () on 'university_files' because we don't want to call the function immediately, we want to call it when WordPress is ready to enqueue scripts and styles.
-
 
 function university_features()
 {
@@ -101,14 +100,14 @@ function university_adjust_queries($query)
         $query->set('meta_key', 'event_date');
         $query->set('orderby', 'meta_value_num');
         $query->set('order', 'ASC');
-        $query->set('meta_query', array(
-            array(
+        $query->set('meta_query', [
+            [
                 'key' => 'event_date',
                 'compare' => '>=',
                 'value' => $today,
                 'type' => 'numeric'
-            )
-        ));
+            ]
+        ]);
     }
 
     if (!is_admin() and is_post_type_archive('campus') and is_main_query()) {
@@ -117,3 +116,26 @@ function university_adjust_queries($query)
 }
 
 add_action('pre_get_posts', 'university_adjust_queries');
+
+// Redirect subscriber accounts out of admin and to homepage
+
+function redirectSubsToFrontend()
+{
+    $ourCurrentUser = wp_get_current_user();
+
+    if (count($ourCurrentUser->roles) == 1 and $ourCurrentUser->roles[0] == 'subscriber') {
+        wp_redirect(site_url('/'));
+        exit;
+    }
+}
+add_action('admin_init', 'redirectSubsToFrontend');
+
+function noSubsAdminBar()
+{
+    $ourCurrentUser = wp_get_current_user();
+
+    if (count($ourCurrentUser->roles) == 1 and $ourCurrentUser->roles[0] == 'subscriber') {
+        show_admin_bar(false);
+    }
+}
+add_action('wp_loaded', 'noSubsAdminBar');
