@@ -6,6 +6,8 @@ function university_post_types()
     register_post_type('campus', [
         'has_archive' => true,
         'show_in_rest' => true,
+        'capability_type' => 'campus',
+        'map_meta_cap' => true,
         'supports' => [
             'title',
             'editor',
@@ -30,6 +32,8 @@ function university_post_types()
     register_post_type('event', [
         'has_archive' => true,
         'show_in_rest' => true,
+        'capability_type' => 'event',
+        'map_meta_cap' => true,
         'supports' => [
             'title',
             'editor',
@@ -54,6 +58,8 @@ function university_post_types()
     register_post_type('program', [
         'has_archive' => true,
         'show_in_rest' => true,
+        'capability_type' => 'program',
+        'map_meta_cap' => true,
         'supports' => [
             'title',
             'editor'
@@ -76,6 +82,8 @@ function university_post_types()
     // Professor Post Type
     register_post_type('professor', [
         'show_in_rest' => true,
+        'capability_type' => 'professor',
+        'map_meta_cap' => true,
         'supports' => [
             'title',
             'editor',
