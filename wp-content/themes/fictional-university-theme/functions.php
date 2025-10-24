@@ -2,11 +2,19 @@
 
 require get_theme_file_path('/inc/search-route.php');
 
+add_action('rest_api_init', 'university_custom_rest');
+
 function university_custom_rest()
 {
     register_rest_field('post', 'authorName', [
         'get_callback' => function () {
             return get_the_author();
+        }
+    ]);
+
+    register_rest_field('note', 'userNoteCount', [
+        'get_callback' => function () {
+            return count_user_posts(get_current_user_id(), 'note');
         }
     ]);
 
@@ -17,15 +25,13 @@ function university_custom_rest()
     //     ));
 }
 
-add_action('rest_api_init', 'university_custom_rest');
+add_filter('acf/fields/google_map/api', 'universityMapKey');
 
 function universityMapKey($api)
 {
     $api['key'] = defined('GOOGLE_MAPS_API_KEY') ? GOOGLE_MAPS_API_KEY : '';
     return $api;
 }
-
-add_filter('acf/fields/google_map/api', 'universityMapKey');
 
 function pageBanner($args = null)
 {
@@ -58,6 +64,8 @@ function pageBanner($args = null)
     </div>
 <?php }
 
+add_action('wp_enqueue_scripts', 'university_files'); // This is what calls the function to enqueue the styles, we also don't add () on 'university_files' because we don't want to call the function immediately, we want to call it when WordPress is ready to enqueue scripts and styles.
+
 function university_files()
 {
     wp_enqueue_script('googleMap', '//maps.googleapis.com/maps/api/js?key=' . (defined('GOOGLE_MAPS_API_KEY') ? GOOGLE_MAPS_API_KEY : ''), null, '1.0', true);
@@ -72,7 +80,8 @@ function university_files()
         'nonce' => wp_create_nonce('wp_rest')
     ]);
 }
-add_action('wp_enqueue_scripts', 'university_files'); // This is what calls the function to enqueue the styles, we also don't add () on 'university_files' because we don't want to call the function immediately, we want to call it when WordPress is ready to enqueue scripts and styles.
+
+add_action('after_setup_theme', 'university_features');
 
 function university_features()
 {
@@ -86,7 +95,8 @@ function university_features()
     add_image_size('professorPortrait', 480, 650, true);
     add_image_size('pageBanner', 1500, 350, true);
 }
-add_action('after_setup_theme', 'university_features');
+
+add_action('pre_get_posts', 'university_adjust_queries');
 
 function university_adjust_queries($query)
 {
@@ -116,9 +126,8 @@ function university_adjust_queries($query)
     }
 }
 
-add_action('pre_get_posts', 'university_adjust_queries');
-
 // Redirect subscriber accounts out of admin and to homepage
+add_action('admin_init', 'redirectSubsToFrontend');
 
 function redirectSubsToFrontend()
 {
@@ -129,7 +138,6 @@ function redirectSubsToFrontend()
         exit;
     }
 }
-add_action('admin_init', 'redirectSubsToFrontend');
 
 function noSubsAdminBar()
 {
@@ -143,12 +151,14 @@ add_action('wp_loaded', 'noSubsAdminBar');
 
 // Customize login screen
 
+add_filter('login_headerurl', 'ourHeaderUrl');
+
 function ourHeaderUrl()
 {
     return esc_url(site_url('/'));
 }
 
-add_filter('login_headerurl', 'ourHeaderUrl');
+add_action('login_enqueue_scripts', 'ourLoginCSS');
 
 function ourLoginCSS()
 {
@@ -157,8 +167,6 @@ function ourLoginCSS()
     wp_enqueue_style('university_main_styles', get_theme_file_uri('/build/style-index.css')); // This will load the style.css file in the theme root directory
     wp_enqueue_style('university_extra_styles', get_theme_file_uri('/build/index.css'));
 }
-
-add_action('login_enqueue_scripts', 'ourLoginCSS');
 
 function ourLoginTitle()
 {
@@ -169,9 +177,14 @@ add_filter('login_headertitle', 'ourLoginTitle');
 
 // Force note posts to be private
 
-function makeNotePrivate($data)
+add_filter('wp_insert_post_data', 'makeNotePrivate', 10, 2);
+
+function makeNotePrivate($data, $postarr)
 {
     if ($data['post_type'] == 'note') {
+        if (count_user_posts(get_current_user_id(), 'note') > 4 and !$postarr['ID']) {
+            die('You have reached your note limit.');
+        }
         $data['post_content'] = sanitize_textarea_field($data['post_content']);
         $data['post_title'] = sanitize_text_field($data['post_title']);
     }
@@ -182,8 +195,6 @@ function makeNotePrivate($data)
     return $data;
 }
 
-add_filter('wp_insert_post_data', 'makeNotePrivate');
-
 // Remove "Private" from titles
 // function removePrivateText()
 // {
@@ -191,5 +202,3 @@ add_filter('wp_insert_post_data', 'makeNotePrivate');
 // }
 
 // add_filter('private_title_format', 'removePrivateText');
-
-
