@@ -166,3 +166,23 @@ function ourLoginTitle()
 }
 
 add_filter('login_headertitle', 'ourLoginTitle');
+
+// Force note posts to be private
+
+function makeNotePrivate($data)
+{
+    if ($data['post_type'] == 'note' and $data['post_status'] != 'trash') {
+        $data['post_status'] = 'private';
+    }
+    return $data;
+}
+
+add_filter('wp_insert_post_data', 'makeNotePrivate');
+
+// Remove "Private" from titles
+function removePrivateText()
+{
+    return '%s';
+}
+
+add_filter('private_title_format', 'removePrivateText');
