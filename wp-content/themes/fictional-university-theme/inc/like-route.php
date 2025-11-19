@@ -6,18 +6,27 @@ function universityLikeRoutes()
 {
     register_rest_route('university/v1', 'manageLike', [
         'methods' => 'POST',
-        'callback' => 'createLike'
+        'callback' => 'createLike',
+        'permission_callback' => '__return_true'
     ]);
 
     register_rest_route('university/v1', 'manageLike', [
         'methods' => 'DELETE',
-        'callback' => 'deleteLike'
+        'callback' => 'deleteLike',
+        'permission_callback' => '__return_true'
     ]);
 }
 
 function createLike()
 {
-    return 'Thanks for trying to create a like.';
+    wp_insert_post([
+        'post_type' => 'like',
+        'post_status' => 'publish',
+        'post_title' => '2nd PHP Test',
+        'meta_input' => [
+            'liked_professor_id' => 12345
+        ]
+    ]);
 }
 
 function deleteLike()

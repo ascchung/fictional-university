@@ -2,8 +2,12 @@ import axios from 'axios';
 
 class Like {
   constructor() {
-    this.events();
+    if (document.querySelector('.like-box')) {
+      axios.defaults.headers.common['X-WP-Nonce'] = universityData.nonce;
+      this.events();
+    }
   }
+
   events() {
     document
       .querySelector('.like-box')
@@ -12,7 +16,11 @@ class Like {
 
   // methods
   ourClickDispatcher(e) {
-    let currentLikeBox = e.currentTarget;
+    let currentLikeBox = e.target;
+    while (!currentLikeBox.classList.contains('like-box')) {
+      currentLikeBox = currentLikeBox.parentElement;
+    }
+
     if (currentLikeBox.getAttribute('data-exists') == 'yes') {
       this.deleteLike(currentLikeBox);
     } else {
