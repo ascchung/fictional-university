@@ -28,7 +28,8 @@ while (have_posts()) {
     ]);
     $existStatus = 'no';
 
-    $existQuery = new WP_Query([
+    if (is_user_logged_in()) {
+        $existQuery = new WP_Query([
         'author' => get_current_user_id(),
         'post_type' => 'like',
         'meta_query' => [
@@ -39,9 +40,11 @@ while (have_posts()) {
             ]
         ]
     ]);
-    if ($existQuery->found_posts) {
-        $existStatus = 'yes';
+        if ($existQuery->found_posts) {
+            $existStatus = 'yes';
+        }
     }
+
     ?>
 
                     <span class="like-box" data-professor="<?php the_ID();?>" data-exists="<?php echo $existStatus;?>">
