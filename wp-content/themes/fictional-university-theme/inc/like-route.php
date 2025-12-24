@@ -17,16 +17,39 @@ function universityLikeRoutes()
     ]);
 }
 
-function createLike()
+function createLike($data)
 {
-    wp_insert_post([
+    if (is_user_logged_in()) {
+        $professor = sanitize_text_field($data['professorId']);
+
+        $existQuery = new WP_Query([
+        'author' => get_current_user_id(),
         'post_type' => 'like',
-        'post_status' => 'publish',
-        'post_title' => '2nd PHP Test',
-        'meta_input' => [
-            'liked_professor_id' => 12345
+        'meta_query' => [
+            [
+                'key' => 'liked_professor_id',
+                'compare' => '=',
+                'value' => $professor
+            ]
         ]
     ]);
+        if ($existQuery->found_posts == 0 and get_post_type($professor) == 'professor') {
+            return wp_insert_post([
+                        'post_type' => 'like',
+                        'post_status' => 'publish',
+                        'post_title' => '2nd PHP Test',
+                        'meta_input' => [
+                            'liked_professor_id' => $professor
+                        ]
+                    ]);
+        } else {
+            die('invalid professor id');
+        }
+
+    } else {
+        die('Only logged in users can create a like.');
+    }
+
 }
 
 function deleteLike()
